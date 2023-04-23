@@ -1,0 +1,50 @@
+# 4 gpu training with all texts
+
+EXP_NAME: celeba_1st0_2rd1_clip05_constantLR_fused_5k_pmt_bs4
+GEN_TYPE: face_pmt
+
+TRAIN:
+  LOSS:
+    lambda_l1:    0.0
+    lambda_l2:    0.0 
+    lambda_lpips: 1.0
+    lambda_id:    0.0
+    lambda_clip:  0.5
+    lambda_wdis:  0.0
+    lambda_w_1st: 0.0
+    lambda_w_2rd: 1.0
+    lambda_w_reg: 1.0
+    CONTRASTIVE:  true
+  TOTAL_ITERS: 5000
+  OPTIMIZER:
+    BASE_LR:   1.0e-5
+    RNN_LR:    1.0e-3
+    MAPPER_LR: 1.0e-3
+    W_DISCRIMINTOR_LR: 1.0e-4
+
+  MIN_LR: 5.0e-6
+
+  LR_SCHEDULER:
+    NAME: null
+
+DATA:
+  BATCH_SIZE: 4
+  IMG_SIZE: 224
+  DATA_PATH: datasets/CelebAMask-HQ
+  NUM_WORKERS: 8
+  PIN_MEMORY: True
+  SHUFFLE: True
+  DROP_LAST: True
+  PREFETCH_FACTOR: 4
+  PERSISTENT_WORKERS: True
+  DEBUG_NUM: -1 #default -1 for normal run
+
+MODEL:
+  N_FRAMES: 4
+  N_INFERENCE_FRAMES: 16
+
+PRINT_FREQ: 200
+SAVE_FREQ: 1000
+
+# PRETRAINED:
+#   OUR_MODEL: eccv2022-outputs/exp_debug_jan6_negative/ckpt/Iter_000800.pth

@@ -1,0 +1,17 @@
+click
+imageio
+yacs
+termcolor
+MoviePy
+sklearn
+clean-fid
+facenet_pytorch
+git+https://github.com/openai/CLIP.git
+ujson
+einops
+h5py 
+timm 
+matplotlib
+scikit-learn
+av
+opencv-python==4.5.1.48

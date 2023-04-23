@@ -1,0 +1,54 @@
+EXP_NAME: metface_res1024_clip03
+GEN_TYPE: face_pmt
+
+TARGET_RESOLUTION: 1024
+
+TRAIN:
+  LOSS:
+    lambda_l1:    0.0
+    lambda_l2:    0.0 
+    lambda_lpips: 1.0
+    lambda_id:    0.0
+    lambda_clip:  0.3
+    lambda_wdis:  0.0
+    lambda_w_1st: 0.0
+    lambda_w_2rd: 1.0
+    lambda_w_reg: 0.0
+    lambda_w_l1:  1.0
+    
+  TOTAL_ITERS: 5000
+  OPTIMIZER:
+    BASE_LR:   1.0e-5
+    RNN_LR:    1.0e-3
+    MAPPER_LR: 1.0e-3
+    W_DISCRIMINTOR_LR: 1.0e-4
+
+  MIN_LR: 5.0e-6
+
+  LR_SCHEDULER:
+    NAME: null
+
+DATA:
+  BATCH_SIZE: 4
+  IMG_SIZE: 224
+  DATA_PATH: datasets/CelebAMask-HQ
+  NUM_WORKERS: 8
+  PIN_MEMORY: True
+  SHUFFLE: True
+  DROP_LAST: True
+  PREFETCH_FACTOR: 4
+  PERSISTENT_WORKERS: True
+  DEBUG_NUM: -1 #default -1 for normal run
+
+MODEL:
+  N_FRAMES: 4
+  N_INFERENCE_FRAMES: 16
+  USE_VISUAL: False
+  USE_LATENT: False
+
+PRINT_FREQ: 200
+SAVE_FREQ: 1000
+
+PRETRAINED:
+  STYLEGAN2: datasets/pretrained_models/stylegan2_pretrained/stylegan2-awesome-network-snapshot-metfaces2.pt
+  # OUR_MODEL: eccv2022-outputs/exp_debug_jan6_negative/ckpt/Iter_000800.pth

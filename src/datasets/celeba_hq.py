@@ -91,7 +91,7 @@ def _sample_negative_example(text_list : list):
 
 class CelebAHQ(data.Dataset):
     def __init__(self, data_dir, is_valid=False, input_resolution=224, 
-                 n_text=2, debug_num=-1, specific_text=None):
+                 n_text=2, debug_num=-1, specific_text=None, return_img=True):
         super().__init__()
         self.data_dir = data_dir
         self.is_valid = is_valid
@@ -110,15 +110,19 @@ class CelebAHQ(data.Dataset):
 
         self.e4e_latents = torch.load(os.path.join(self.data_dir, 'celeba_e4e_latents.pt'))
         self.specific_text = specific_text
+        self.return_img = return_img
 
     def __getitem__(self, index):
         meta = self.meta_info[index]
         fn = meta['vis_name']
-        img = self.transform(Image.open(
-            os.path.join(self.data_dir, "CelebA-HQ-img", fn + ".jpg")))
 
         latent_code = self.e4e_latents[fn]
         latent_code.requires_grad = False
+        if self.return_img:
+            img = self.transform(Image.open(
+            os.path.join(self.data_dir, "CelebA-HQ-img", fn + ".jpg")))
+        else:
+            img = None
         return dict(
             filename=fn, img=img,
             latent_code=latent_code,
@@ -164,22 +168,26 @@ def _test_io():
 
 class DataCollator(object):
 
-    def __init__(self, specific_text=None, _type="face"):
+    def __init__(self, specific_text=None, _type="face", return_img=True):
         self.specific_text = specific_text
         self._type = _type
         self._TEXT_DESCRIPTION = build_vocabulary(_type)
+        self.return_img = return_img
 
     def collate_batch(self, batch):
         r"""
         batch is the collection of a dict
         """
 
-        if isinstance(batch[0]["img"], torch.Tensor):
-            v_collate = default_collate
+        if self.return_img:
+            if isinstance(batch[0]["img"], torch.Tensor):
+                v_collate = default_collate
+            else:
+                data_type = type(batch[0]["img"])
+                raise ValueError(f"torch.Tensor is expected, but got {data_type}")
+            img = v_collate([d["img"] for d in batch])
         else:
-            data_type = type(batch[0]["img"])
-            raise ValueError(f"torch.Tensor is expected, but got {data_type}")
-        img = v_collate([d["img"] for d in batch])
+            img = None
 
         if isinstance(batch[0]["latent_code"], torch.Tensor):
             v_collate = default_collate

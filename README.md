@@ -22,6 +22,7 @@ cd language-guided-animation
 DATABLOB="."
 mkdir -p $DATABLOB/datasets/pretrained_models;
 wget https://github.com/researchmm/language-guided-animation/releases/download/v0.0.0/stylegan2-ffhq-config-f.pt -O $DATABLOB/datasets/pretrained_models/stylegan2-ffhq-config-f.pt;
+mkdir -p $DATABLOB/datasets/pretrained_models/stylegan2_pretrained/;
 wget https://github.com/researchmm/language-guided-animation/releases/download/v0.0.0/stylegan2-awesome-network-snapshot-metfaces2.pt -O $DATABLOB/datasets/pretrained_models/stylegan2_pretrained/stylegan2-awesome-network-snapshot-metfaces2.pt;
 mkdir -p $DATABLOB/datasets/CelebAMask-HQ;
 wget https://github.com/researchmm/language-guided-animation/releases/download/v0.0.0/meta_train.pkl -O $DATABLOB/datasets/CelebAMask-HQ/meta_train.pkl;

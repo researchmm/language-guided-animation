@@ -43,9 +43,12 @@ def build_dataloader(cfg):
         is_valid=False, 
         debug_num=cfg.DATA.DEBUG_NUM,
         specific_text=cfg.SPECIFIC_TEXT,
+        return_img=cfg.MODEL.USE_VISUAL,
     )
 
-    datacollator = DataCollator(cfg.SPECIFIC_TEXT, _type=cfg.GEN_TYPE)
+    datacollator = DataCollator(
+        cfg.SPECIFIC_TEXT, _type=cfg.GEN_TYPE,
+        return_img=cfg.MODEL.USE_VISUAL)
 
     train_loader = data.DataLoader(
         dataset=train_ds,
